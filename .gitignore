@@ -1,0 +1,8 @@
+/*
+!/src
+!/.gitignore
+!/.prettierrc
+!/package.json
+!/README.md
+!/tsconfig.json
+!/yarn.lock
