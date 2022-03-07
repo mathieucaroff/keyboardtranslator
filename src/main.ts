@@ -7,6 +7,7 @@ import { githubCornerHTML } from "./lib/githubCorner"
 import { repository, version } from "../package.json"
 import { UserInterface } from "./UserInterface"
 import { createTranslator } from "./translator"
+import { keyboardSet } from "./layout"
 
 function main() {
     let div = document.createElement("div")
@@ -29,11 +30,18 @@ interface AppProp {
 }
 
 function App(prop: AppProp) {
-    let [source, setSource] = useState("azerty")
-    let [destination, setDestination] = useState("asset2018")
+    let [source, setSourceLayout] = useState(keyboardSet["azerty"])
+    let [destination, setDestinationLayout] = useState(keyboardSet["asset2018"])
     let translator = createTranslator({ source, destination })
 
-    return React.createElement(UserInterface, { ...prop, setSource, setDestination, translator })
+    return React.createElement(UserInterface, {
+        ...prop,
+        sourceLayout: source,
+        destinationLayout: destination,
+        setSourceLayout,
+        setDestinationLayout,
+        translator,
+    })
 }
 
 main()
