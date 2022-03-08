@@ -30,12 +30,19 @@ interface AppProp {
 }
 
 function App(prop: AppProp) {
-    let [source, setSourceLayout] = useState(keyboardSet["azerty"])
-    let [destination, setDestinationLayout] = useState(keyboardSet["asset2018"])
+    let search = new URLSearchParams(location.search)
+
+    let [source, setSourceLayout] = useState(() => {
+        return search.get("sourceLayout") || keyboardSet["azerty"]
+    })
+    let [destination, setDestinationLayout] = useState(() => {
+        return search.get("destinationLayout") || keyboardSet["asset2018"]
+    })
     let translator = createTranslator({ source, destination })
 
     return React.createElement(UserInterface, {
         ...prop,
+        search,
         sourceLayout: source,
         destinationLayout: destination,
         setSourceLayout,

@@ -1,7 +1,8 @@
 import { Col, Input, PageHeader, Row, Select } from "antd"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { keyboardSet } from "./layout"
 import { Translator } from "./translator"
+import { pushStateUrl } from "./util/pushStateUrl"
 
 const { TextArea } = Input
 const { Option } = Select
@@ -9,6 +10,7 @@ const { Option } = Select
 export interface UserInterfaceProp {
     title: string
     subtitle: string
+    search: URLSearchParams
     translator: Translator
     sourceLayout: string
     destinationLayout: string
@@ -17,12 +19,40 @@ export interface UserInterfaceProp {
 }
 
 export function UserInterface(prop: UserInterfaceProp) {
-    let [state, setState] = useState(() => ({
-        sourceLayoutName: "azerty",
-        destinationLayoutName: "asset2018",
-        sourceText: "",
-        destinationText: "",
-    }))
+    let [state, setState] = useState(() => {
+        let sourceLayoutName = "azerty"
+        let destinationLayoutName = "asset2018"
+
+        if (prop.search.has("sourceLayout")) {
+            sourceLayoutName = "other"
+        }
+        if (prop.search.has("destinationLayout")) {
+            destinationLayoutName = "other"
+        }
+
+        return {
+            sourceLayoutName,
+            destinationLayoutName,
+            sourceText: "",
+            destinationText: "",
+        }
+    })
+
+    useEffect(() => {
+        let { sourceLayout } = prop
+        if (state.sourceLayoutName !== "other") {
+            sourceLayout = ""
+        }
+        pushStateUrl({ sourceLayout }, window)
+    }, [state.sourceLayoutName === "other", prop.sourceLayout])
+
+    useEffect(() => {
+        let { destinationLayout } = prop
+        if (state.destinationLayoutName !== "other") {
+            destinationLayout = ""
+        }
+        pushStateUrl({ destinationLayout }, window)
+    }, [state.destinationLayoutName === "other", prop.destinationLayout])
 
     let keyboardLayoutArray = Object.keys(keyboardSet).map((name) => (
         <Option key={name} value={name}>
