@@ -7,11 +7,12 @@
     "url": "https://github.com/mathieucaroff/keyboardtranslator.git"
   },
   "license": "CC0-1.0",
-  "source": "src/keyboardtranslator.html",
+  "source": "src/index.html",
   "scripts": {
     "check": "tsc --noEmit",
     "checkwatch": "tsc --noEmit --watch",
-    "build": "parcel build --public-url keyboardtranslator.d",
+    "build": "parcel build --dist-dir public",
+    "mcabuild": "parcel build --public-url keyboardtranslator.d",
     "serve": "parcel"
   },
   "devDependencies": {
